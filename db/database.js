@@ -26,7 +26,7 @@ function getCategories() {
 // create category
 function addCategory(category) {
   return knex('categories')
-    .insert(category, '*')
+    .insert({ category }, '*')
     .then((result) => result[0])
     .catch((err) => {
       console.log(err);
