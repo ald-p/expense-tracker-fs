@@ -3,6 +3,10 @@ const express = require('express');
 const server = express();
 const PORT = 3000;
 
+// Enable CORS
+const cors = require('cors');
+server.use(cors());
+
 // Body parsers
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
