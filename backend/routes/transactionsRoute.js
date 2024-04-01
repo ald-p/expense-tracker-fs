@@ -17,7 +17,13 @@ router.get('/', async (req, res) => {
 
 // Validate request body - middleware
 function validateTransactionBody(req, res, next) {
-  if (req.date && req.name && req.is_expense && req.amount && req.category_id) {
+  if (
+    req.body.date &&
+    req.body.name &&
+    req.body.is_expense &&
+    req.body.amount &&
+    req.body.category_id
+  ) {
     next();
   } else {
     res.status(500).json({
