@@ -6,10 +6,20 @@ const knex = require('knex')(config);
 function getTransactions() {
   return knex('transactions')
     .join('categories', 'categories.id', 'transactions.category_id')
-    .then((result) => result)
+    .select(
+      'transactions.id',
+      'date',
+      'name',
+      'is_expense',
+      'amount',
+      'category_id',
+      'category'
+    )
+    .then((result) => {
+      return result;
+    })
     .catch((err) => {
-      console.log(err);
-      process.exit(1);
+      return false;
     });
 }
 
@@ -18,8 +28,7 @@ function getCategories() {
   return knex('categories')
     .then((result) => result)
     .catch((err) => {
-      console.log(err);
-      process.exit(1);
+      return false;
     });
 }
 
@@ -29,8 +38,7 @@ function addCategory(category) {
     .insert({ category }, '*')
     .then((result) => result[0])
     .catch((err) => {
-      console.log(err);
-      process.exit(1);
+      return false;
     });
 }
 
@@ -40,7 +48,7 @@ function getTransactionsInCategory(category_id) {
     .where('id', category_id)
     .first()
     .then((category) => {
-      knex('transactions')
+      return knex('transactions')
         .where('category_id', category.id)
         .then((transactions) => {
           category.transactions = transactions;
@@ -52,8 +60,7 @@ function getTransactionsInCategory(category_id) {
         });
     })
     .catch((err) => {
-      console.log(err);
-      process.exit(1);
+      return false;
     });
 }
 
@@ -63,8 +70,7 @@ function addTransaction(transaction) {
     .insert(transaction, '*')
     .then((result) => result[0])
     .catch((err) => {
-      console.log(err);
-      process.exit(1);
+      return false;
     });
 }
 
@@ -75,8 +81,7 @@ function deleteTransaction(transaction_id) {
     .where('id', transaction_id)
     .then((result) => result)
     .catch((err) => {
-      console.log(err);
-      process.exit(1);
+      return false;
     });
 }
 
