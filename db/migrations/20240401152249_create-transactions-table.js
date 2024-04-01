@@ -6,6 +6,7 @@ exports.up = function (knex) {
   return knex.schema.createTable('transactions', (table) => {
     table.increments();
     table.date('date');
+    table.string('name');
     table.boolean('is_expense');
     table.decimal('amount', 14, 2);
     table.integer('category_id').notNullable();
