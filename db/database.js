@@ -5,15 +5,7 @@ const knex = require('knex')(config);
 function getTransactions() {
   return knex('transactions')
     .join('categories', 'categories.id', 'transactions.category_id')
-    .select(
-      'transactions.id',
-      'date',
-      'name',
-      'is_expense',
-      'amount',
-      'category'
-    )
-    .then((result) => result)
+    .then((result) => console.log(result))
     .catch((err) => {
       console.log(err);
       process.exit(1);
@@ -21,9 +13,26 @@ function getTransactions() {
 }
 
 function getCategories() {
-  return knex('categories').then((result) => console.log(result));
+  return knex('categories')
+    .then((result) => result)
+    .catch((err) => {
+      console.log(err);
+      process.exit(1);
+    });
 }
 
-getCategories();
+function getTransactionsInCategory(category_id) {
+  return knex('categories')
+    .where('id', category_id)
+    .first()
+    .then((category) => {
+      knex('transactions')
+        .where('category_id', category.id)
+        .then((transactions) => {
+          category.transactions = transactions;
+          console.log(category);
+        });
+    });
+}
 
-// module.exports = { getTransactions, }
+// module.exports = { getTransactions, getCategories }
