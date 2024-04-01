@@ -6,7 +6,18 @@ const knex = require('knex')(config);
 function getTransactions() {
   return knex('transactions')
     .join('categories', 'categories.id', 'transactions.category_id')
-    .then((result) => result)
+    .select(
+      'transactions.id',
+      'date',
+      'name',
+      'is_expense',
+      'amount',
+      'category_id',
+      'category'
+    )
+    .then((result) => {
+      return result;
+    })
     .catch((err) => {
       console.log(err);
       process.exit(1);
@@ -79,6 +90,8 @@ function deleteTransaction(transaction_id) {
       process.exit(1);
     });
 }
+
+getTransactions();
 
 module.exports = {
   getTransactions,
