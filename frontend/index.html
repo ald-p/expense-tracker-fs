@@ -121,7 +121,7 @@
               ></button>
             </div>
             <div class="modal-body">
-              <form>
+              <form id="addTransactionForm">
                 <div class="mb-3">
                   <label for="date" class="form-label">Date</label>
                   <input
@@ -145,14 +145,14 @@
                   <label for="category" class="form-label">Category</label>
                   <select class="form-select" name="category" id="category">
                     <option selected>Select one...</option>
-                    <option value="income">Income</option>
-                    <option value="automotive">Automotive</option>
-                    <option value="dining">Dining</option>
-                    <option value="groceries">Groceries</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="medical">Medical</option>
-                    <option value="housing">Housing</option>
-                    <option value="utilities">Utilities</option>
+                    <option value="Income">Income</option>
+                    <option value="Automotive">Automotive</option>
+                    <option value="Dining">Dining</option>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Housing">Housing</option>
+                    <option value="Utilities">Utilities</option>
                   </select>
                 </div>
                 <div class="mb-3">
@@ -162,6 +162,7 @@
                       type="radio"
                       name="type"
                       id="type"
+                      value="inflow"
                     />
                     <label class="form-check-label" for="type">Inflow</label>
                   </div>
@@ -171,6 +172,7 @@
                       type="radio"
                       name="type"
                       id="type"
+                      value="outflow"
                       checked
                     />
                     <label class="form-check-label" for="type">Outflow</label>
@@ -185,17 +187,8 @@
                     class="form-control m-1"
                   />
                 </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
               </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary">Submit</button>
             </div>
           </div>
         </div>

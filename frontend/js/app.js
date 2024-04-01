@@ -1,5 +1,6 @@
 /* Selectors */
 const transactionsList = document.querySelector('#transactions-list');
+const addTransactionForm = document.querySelector('#addTransactionForm');
 
 /* DOM Manipulation */
 // Refresh transactions display
@@ -75,6 +76,48 @@ async function deleteTransaction(id) {
   return result;
 }
 
+async function addTransaction(transaction) {
+  const categoryId = await findCategoryId(transaction.category);
+  const transactionToAdd = {
+    date: transaction.date,
+    name: transaction.name,
+    is_expense: transaction.type === 'outflow' ? true : false,
+    category_id: categoryId,
+    amount: transaction.amount,
+  };
+
+  const response = await fetch('http://localhost:3000/transactions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(transactionToAdd),
+  });
+
+  const result = await response.json();
+  console.log(result);
+  return result;
+}
+
+async function getCategories() {
+  const response = await fetch('http://localhost:3000/categories');
+  const result = await response.json();
+
+  return result;
+}
+
+/* Utility functions */
+async function findCategoryId(inputCategory) {
+  const categories = await getCategories();
+
+  const foundCategory = categories.find(
+    (category) => category.category === inputCategory
+  );
+  const categoryId = foundCategory.id;
+
+  return categoryId;
+}
+
 /* Event handlers */
 async function handleDeleteBtn(e) {
   const transactionId = e.target.parentElement.parentElement.id;
@@ -82,7 +125,21 @@ async function handleDeleteBtn(e) {
   await refreshTransactions();
 }
 
+async function handleFormSubmit(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = new FormData(form);
+  const formObj = Object.fromEntries(formData.entries());
+  console.log(formObj);
+  form.reset();
+
+  await addTransaction(formObj);
+  await refreshTransactions();
+}
+
 /* Event Listeners */
 document.addEventListener('DOMContentLoaded', () => {
+  addTransactionForm.addEventListener('submit', handleFormSubmit);
   refreshTransactions();
 });
