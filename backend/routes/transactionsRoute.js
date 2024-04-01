@@ -20,7 +20,6 @@ function validateTransactionBody(req, res, next) {
   if (
     req.body.date &&
     req.body.name &&
-    req.body.is_expense &&
     req.body.amount &&
     req.body.category_id
   ) {

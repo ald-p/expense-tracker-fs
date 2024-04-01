@@ -2,6 +2,10 @@
 const transactionsList = document.querySelector('#transactions-list');
 const addTransactionForm = document.querySelector('#addTransactionForm');
 
+const incomeVal = document.querySelector('#income-value');
+const expenseVal = document.querySelector('#expense-value');
+const netVal = document.querySelector('#net-value');
+
 /* DOM Manipulation */
 // Refresh transactions display
 async function refreshTransactions() {
@@ -12,6 +16,8 @@ async function refreshTransactions() {
     const transactionRow = createTransactionRowEls(transaction);
     transactionsList.append(transactionRow);
   });
+
+  updateTotalsDisplay(transactions);
 }
 
 // Create row elements
@@ -58,6 +64,15 @@ function createTransactionRowEls(transaction) {
   tr.append(tdBtn);
 
   return tr;
+}
+
+// update income, expense, and net total displays
+function updateTotalsDisplay(transactions) {
+  const { income, expenses, net } = calculateSums(transactions);
+
+  incomeVal.textContent = `+ $${income}`;
+  expenseVal.textContent = `- $${expenses}`;
+  netVal.textContent = `$${net}`;
 }
 
 /* API calls */
@@ -116,6 +131,31 @@ async function findCategoryId(inputCategory) {
   const categoryId = foundCategory.id;
 
   return categoryId;
+}
+
+function calculateSums(transactions) {
+  const inflows = transactions.filter((transaction) => !transaction.is_expense);
+  const outflows = transactions.filter((transaction) => transaction.is_expense);
+
+  const income = inflows
+    .reduce(
+      (accumulator, currentTransaction) =>
+        accumulator + Number(currentTransaction.amount),
+      0
+    )
+    .toFixed(2);
+
+  const expenses = outflows
+    .reduce(
+      (accumulator, currentTransaction) =>
+        accumulator + Number(currentTransaction.amount),
+      0
+    )
+    .toFixed(2);
+
+  const net = (income - expenses).toFixed(2);
+
+  return { income, expenses, net };
 }
 
 /* Event handlers */
