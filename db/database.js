@@ -91,8 +91,6 @@ function deleteTransaction(transaction_id) {
     });
 }
 
-getTransactions();
-
 module.exports = {
   getTransactions,
   getCategories,
